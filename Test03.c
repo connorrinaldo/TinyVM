@@ -4,15 +4,15 @@
 #include <stdlib.h>
 
 typedef struct {
-		int opCode;
+    int opCode;
     int Address;
-	} Instruction;
+} Instruction;
 
 void linePrint(int pc, int ac, int *dm){//Prints the current state
 	printf("PC = %d | AC = %d | DM = [", pc, ac);
 	for(int i = 0; i < 9; i++){
 		printf("%d, ", dm[i]);
-		}
+	}
 	printf("%d]\n\n", dm[9]);//Makes it look nice
 }
 
@@ -53,59 +53,59 @@ while (fscanf(file, "%d %d",&IM[i].opCode, &IM[i].Address) != EOF && run == 1)
         MAR2 = IM[i].Address;
         MDR2 = DM[MAR2];
         AC = MDR2;
-				printf("/* loading from memory loaction %d */\n", MAR2);
-				linePrint(PC, AC, DM);
+	printf("/* loading from memory loaction %d */\n", MAR2);
+	linePrint(PC, AC, DM);
         break;
       case 2:
         MAR2 = IM[i].Address;
         MDR2 = DM[MAR2];
         AC = AC + MDR2;
-				printf("/* adding accumulator and memory location %d */\n", MAR2);
-				linePrint(PC, AC, DM);
+	printf("/* adding accumulator and memory location %d */\n", MAR2);
+	linePrint(PC, AC, DM);
         break;
       case 3:
         MAR2 = IM[i].Address;
         MDR2 = AC;
         DM[MAR2] = MDR2;
-				printf("/* storing accumulator to memory location %d */\n", MAR2);
-				linePrint(PC, AC, DM);
+	printf("/* storing accumulator to memory location %d */\n", MAR2);
+	linePrint(PC, AC, DM);
         break;
       case 4:
         MAR2 = IM[i].Address;
         MDR2 = DM[MAR2];
         AC = AC - MDR2;
-				printf("/* subtracting accumulator and memory location %d */\n", MAR2);
-				linePrint(PC, AC, DM);
+	printf("/* subtracting accumulator and memory location %d */\n", MAR2);
+	linePrint(PC, AC, DM);
         break;
       case 5:
-				printf("/* input value */\n");
+	printf("/* input value */\n");
         scanf("%d", &AC);
-				linePrint(PC, AC, DM);
+	linePrint(PC, AC, DM);
         break;
       case 6:
         printf("/* outputting accumulator to screen */\n%d\n", AC);
-				linePrint(PC, AC, DM);
+	linePrint(PC, AC, DM);
         break;
       case 7:
         run = 0;
-				printf("/* Program Complete, last state */\n");
-				linePrint(PC, AC, DM);
+	printf("/* Program Complete, last state */\n");
+	linePrint(PC, AC, DM);
         break;
       case 8://Clsoes the file and reopens it to the jump line
       	PC = IM[i].Address;
-				printf("/* jumping to line %d */\n", PC);
-				fclose(file);
-				file=fopen(argv[1],"r");
-				for(int i = 0; i < PC; i++)//Goes to the new line
-					fscanf(file, "%d %d",&IM[i].opCode, &IM[i].Address) != EOF;
-				linePrint(PC, AC, DM);
+	printf("/* jumping to line %d */\n", PC);
+	fclose(file);
+	file=fopen(argv[1],"r");
+	for(int i = 0; i < PC; i++)//Goes to the new line
+		fscanf(file, "%d %d",&IM[i].opCode, &IM[i].Address) != EOF;
+	linePrint(PC, AC, DM);
         break;
       case 9:
         if(AC == 0){
-					printf("/* skipping next line */\n");+
-					fscanf(file, "%d %d",&IM[i].opCode, &IM[i].Address) != EOF;//Skips a single line
-					linePrint(PC, AC, DM);
-				}
+		printf("/* skipping next line */\n");+
+		fscanf(file, "%d %d",&IM[i].opCode, &IM[i].Address) != EOF;//Skips a single line
+		linePrint(PC, AC, DM);
+	}
         break;
     }
    i++;
